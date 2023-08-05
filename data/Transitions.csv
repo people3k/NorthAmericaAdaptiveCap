@@ -1,0 +1,226 @@
+ID,Case,Transition Type,Generations,Years,ScaleID,KDEID,Peak
+HG,Central Texas,Negative,2,60,0,0,
+HG,Central Texas,Negative,2,60,0,0,
+HG,Central Texas,Negative,2,60,0,0,
+HG,Central Texas,Negative,3,90,0,0,
+HG,Central Texas,Negative,3,90,0,0,
+HG,Central Texas,Negative,3,90,0,0,
+HG,Central Texas,Negative,4,120,0,0,
+HG,Central Texas,Negative,6,180,0,0,
+HG,Central Texas,Negative,6,180,0,0,
+HG,Central Texas,Negative,7,210,0,0,
+HG,Central Texas,Negative,10,300,0,0,
+HG,Central Texas,Positive,2,60,0,0,
+HG,Central Texas,Positive,3,90,0,0,
+HG,Central Texas,Positive,3,90,0,0,
+HG,Central Texas,Positive,4,120,0,0,
+HG,Central Texas,Positive,6,180,0,0,
+HG,Central Texas,Positive,7,210,0,0,
+HG,Central Texas,Positive,8,240,0,0,
+HG,Central Texas,Positive,8,240,0,0,
+HG,Central Texas,Positive,9,270,0,0,
+HG,Central.Plains.USA,Negative,6,180,1,0,
+HG,Central.Plains.USA,Negative,6,180,1,0,
+Min Agg,Central.Plains.USA,Negative,6,180,1,0,
+Moderate Agg,Central.Plains.USA,Negative,7,210,1,0,
+HG,Central.Plains.USA,Negative,8,240,1,0,
+HG,Central.Plains.USA,Negative,8,240,1,0,
+HG,Central.Plains.USA,Positive,4,120,1,0,
+HG,Central.Plains.USA,Positive,7,210,1,0,
+HG,Central.Plains.USA,Positive,11,330,1,0,
+HG,Central.Plains.USA,Positive,15,450,1,0,
+Min Agg,Central.Plains.USA,Positive,16,480,1,0,
+Moderate Agg,Central.Plains.USA,Positive,26,780,1,0,
+AGG,East Great Basin,Negative,2,60,0,0,
+HG,East Great Basin,Negative,2,60,0,0,
+HG,East Great Basin,Negative,2,60,0,0,
+AGG,East Great Basin,Negative,6,180,0,0,
+HG,East Great Basin,Negative,6,180,0,0,
+AGG,East Great Basin,Negative,8,240,0,0,
+AGG,East Great Basin,Negative,10,300,0,0,
+HG,East Great Basin,Positive,7,210,0,0,
+HG,East Great Basin,Positive,8,240,0,0,
+AGG,East Great Basin,Positive,11,330,0,0,
+AGG,East Great Basin,Positive,17,510,0,0,
+AGG,East Great Basin,Positive,21,630,0,0,
+Min Agg,Midwest.USA,Negative,5,150,1,0,
+HG,Midwest.USA,Negative,6,180,1,0,
+Min Agg,Midwest.USA,Negative,6,180,1,0,
+Moderate Agg,Midwest.USA,Negative,8,240,1,0,
+Min Agg,Midwest.USA,Negative,12,360,1,0,
+Min Agg,Midwest.USA,Positive,7,210,1,0,
+Moderate Agg,Midwest.USA,Positive,16,480,1,0,
+HG,Midwest.USA,Positive,17,510,1,0,
+Min Agg,Midwest.USA,Positive,17,510,1,0,
+Min Agg,Midwest.USA,Positive,23,690,1,0,
+AGG,Miss. River Valley,Negative,2,60,0,0,
+AGG,Miss. River Valley,Negative,7,210,0,0,
+AGG,Miss. River Valley,Negative,10,300,0,0,
+AGG,Miss. River Valley,Negative,17,510,0,0,
+AGG,Miss. River Valley,Positive,9,270,0,0,
+AGG,Miss. River Valley,Positive,10,300,0,0,
+AGG,Miss. River Valley,Positive,20,600,0,0,
+AGG,Miss. River Valley,Positive,28,840,0,0,
+Min Agg,Northeast USA,Negative,2,60,1,0,
+Min Agg,Northeast USA,Negative,3,90,1,0,
+Moderate Agg,Northeast USA,Negative,3,90,1,0,
+Min Agg,Northeast USA,Negative,7,210,1,0,
+Min Agg,Northeast USA,Negative,7,210,1,0,
+HG,Northeast USA,Negative,8,240,1,0,
+HG,Northeast USA,Negative,15,450,1,0,
+Min Agg,Northeast USA,Positive,6,180,1,0,
+Min Agg,Northeast USA,Positive,7,210,1,0,
+HG,Northeast USA,Positive,8,240,1,0,
+Min Agg,Northeast USA,Positive,10,300,1,0,
+Moderate Agg,Northeast USA,Positive,21,630,1,0,
+Min Agg,Northeast USA,Positive,22,660,1,0,
+HG,Rocky.Mountains.USA,Negative,7,210,1,0,
+HG,Rocky.Mountains.USA,Negative,11,330,1,0,
+HG,Rocky.Mountains.USA,Negative,13,390,1,0,
+HG,Rocky.Mountains.USA,Negative,20,600,1,0,
+HG,Rocky.Mountains.USA,Positive,5,150,1,0,
+HG,Rocky.Mountains.USA,Positive,10,300,1,0,
+HG,Rocky.Mountains.USA,Positive,11,330,1,0,
+HG,Rocky.Mountains.USA,Positive,32,960,1,0,
+Min Agg,Southeastern.USA,Negative,4,120,1,0,
+Min Agg,Southeastern.USA,Negative,6,180,1,0,
+Moderate Agg,Southeastern.USA,Negative,6,180,1,0,
+HG,Southeastern.USA,Negative,8,240,1,0,
+HG,Southeastern.USA,Negative,11,330,1,0,
+Min Agg,Southeastern.USA,Positive,9,270,1,0,
+Min Agg,Southeastern.USA,Positive,11,330,1,0,
+HG,Southeastern.USA,Positive,12,360,1,0,
+Moderate Agg,Southeastern.USA,Positive,16,480,1,0,
+Min Agg,Southeastern.USA,Positive,30,900,1,0,
+HG,Southern.USA,Negative,4,120,1,0,
+HG,Southern.USA,Negative,5,150,1,0,
+Min Agg,Southern.USA,Negative,5,150,1,0,
+HG,Southern.USA,Negative,8,240,1,0,
+HG,Southern.USA,Negative,8,240,1,0,
+HG,Southern.USA,Positive,7,210,1,0,
+HG,Southern.USA,Positive,8,240,1,0,
+HG,Southern.USA,Positive,14,420,1,0,
+HG,Southern.USA,Positive,20,600,1,0,
+Min Agg,Southern.USA,Positive,33,990,1,0,
+Moderate Agg,Southwestern.USA,Negative,5,150,1,0,
+Moderate Agg,Southwestern.USA,Negative,6,180,1,0,
+Moderate Agg,Southwestern.USA,Negative,11,330,1,0,
+Moderate Agg,Southwestern.USA,Negative,11,330,1,0,
+Moderate Agg,Southwestern.USA,Positive,7,210,1,0,
+Moderate Agg,Southwestern.USA,Positive,33,990,1,0,
+Moderate Agg,Southwestern.USA,Positive,41,1230,1,0,
+HG,West Great Basin,Negative,2,60,0,0,
+HG,West Great Basin,Negative,2,60,0,0,
+HG,West Great Basin,Negative,2,60,0,0,
+HG,West Great Basin,Negative,2,60,0,0,
+HG,West Great Basin,Negative,4,120,0,0,
+HG,West Great Basin,Negative,5,150,0,0,
+HG,West Great Basin,Negative,8,240,0,0,
+HG,West Great Basin,Negative,9,270,0,0,
+HG,West Great Basin,Positive,2,60,0,0,
+HG,West Great Basin,Positive,3,90,0,0,
+HG,West Great Basin,Positive,4,120,0,0,
+HG,West Great Basin,Positive,4,120,0,0,
+HG,West Great Basin,Positive,4,120,0,0,
+HG,West Great Basin,Positive,5,150,0,0,
+HG,West Great Basin,Positive,5,150,0,0,
+HG,West Great Basin,Positive,6,180,0,0,
+HG,West Great Basin,Positive,6,180,0,0,
+HG,West Great Basin,Positive,7,210,0,0,
+HG,West Great Basin,Positive,11,330,0,0,
+HG,Western.USA,Negative,4,120,1,0,
+HG,Western.USA,Negative,4,120,1,0,
+HG,Western.USA,Negative,4,120,1,0,
+HG,Western.USA,Negative,6,180,1,0,
+HG,Western.USA,Negative,6,180,1,0,
+HG,Western.USA,Negative,8,240,1,0,
+HG,Western.USA,Positive,4,120,1,0,
+HG,Western.USA,Positive,6,180,1,0,
+HG,Western.USA,Positive,6,180,1,0,
+HG,Western.USA,Positive,7,210,1,0,
+HG,Western.USA,Positive,7,210,1,0,
+HG,Western.USA,Positive,8,240,1,0,
+HG,Western.USA,Positive,8,240,1,0,
+HG,Western.USA,Positive,8,240,1,0,
+HG,Western.USA,Positive,19,570,1,0,
+Min Agg,Southwestern.USA,Positive,19,570,1,1,0.123176487033594
+Min Agg,Southwestern.USA,Negative,5,150,1,1,-0.0394144207396518
+Min Agg,Southwestern.USA,Positive,6,180,1,1,0.0589552485746383
+Min Agg,Southwestern.USA,Negative,5,150,1,1,-0.0410957250416484
+Min Agg,Southwestern.USA,Positive,10,300,1,1,0.0595417499920101
+Min Agg,Southwestern.USA,Negative,3,90,1,1,-0.0130200697829688
+Moderate Agg,Southwestern.USA,Positive,27,810,1,1,0.120336989849874
+Moderate Agg,Southwestern.USA,Negative,15,450,1,1,-0.164244466117856
+HG,Southern.USA,Negative,3,90,1,1,-0.016147575830348
+HG,Southern.USA,Positive,11,330,1,1,0.0623124311480323
+HG,Southern.USA,Negative,6,180,1,1,-0.0291051018730784
+HG,Southern.USA,Positive,9,270,1,1,0.172877176649129
+HG,Southern.USA,Negative,7,210,1,1,-0.0558467300478158
+HG,Southern.USA,Positive,11,330,1,1,0.0528322433689743
+HG,Southern.USA,Negative,5,150,1,1,-0.0219794759538372
+HG,Southern.USA,Positive,3,90,1,1,0.00555000133680572
+HG,Southern.USA,Negative,9,270,1,1,-0.0130302044169026
+Moderate Agg,Southern.USA,Positive,35,1050,1,1,0.0935563387414788
+Moderate Agg,Southern.USA,Negative,3,90,1,1,-0.0217566180997011
+HG,Western.USA,Negative,2,60,1,1,-0.0189509569586654
+HG,Western.USA,Positive,11,330,1,1,0.0586706399545891
+HG,Western.USA,Negative,7,210,1,1,-0.0276350279002129
+HG,Western.USA,Positive,11,330,1,1,0.105437593636844
+HG,Western.USA,Negative,7,210,1,1,-0.0114782469789247
+HG,Western.USA,Positive,29,870,1,1,0.0535189854826736
+HG,Western.USA,Negative,4,120,1,1,-0.0108765790796337
+HG,Western.USA,Positive,7,210,1,1,0.0415712452585737
+HG,Western.USA,Negative,4,120,1,1,-0.00892639163522713
+HG,Western.USA,Positive,6,180,1,1,0.0438599676516356
+HG,Western.USA,Negative,5,150,1,1,-0.0414263568468405
+HG,Western.USA,Positive,11,330,1,1,0.0833614955760531
+HG,Western.USA,Negative,3,90,1,1,-0.0215264478109178
+HG,Central.Plains.USA,Positive,4,120,1,1,0.0136391948124492
+HG,Central.Plains.USA,Negative,8,240,1,1,-0.0737484766161414
+HG,Central.Plains.USA,Positive,16,480,1,1,0.107206519529707
+HG,Central.Plains.USA,Negative,5,150,1,1,-0.0337475872992732
+HG,Central.Plains.USA,Positive,7,210,1,1,0.0803428463526981
+HG,Central.Plains.USA,Negative,5,150,1,1,-0.0558733760182308
+Min Agg,Central.Plains.USA,Positive,15,450,1,1,0.0967144763444248
+Min Agg,Central.Plains.USA,Negative,7,210,1,1,-0.0340642381827569
+Moderate Agg,Central.Plains.USA,Positive,24,720,1,1,0.132096556775205
+Moderate Agg,Central.Plains.USA,Negative,6,180,1,1,-0.0319319501770168
+HG,Northeast USA,Positive,7,210,1,1,0.0357895415694243
+HG,Northeast USA,Negative,5,150,1,1,-0.0160400234859974
+Min Agg,Northeast USA,Positive,6,180,1,1,0.0173669501649805
+Min Agg,Northeast USA,Negative,5,150,1,1,-0.0363180126027576
+Min Agg,Northeast USA,Positive,9,270,1,1,0.0775725957689284
+Min Agg,Northeast USA,Negative,9,270,1,1,-0.0595038112652562
+Min Agg,Northeast USA,Positive,7,210,1,1,0.032761028291934
+Min Agg,Northeast USA,Negative,5,150,1,1,-0.0334800136790703
+Min Agg,Northeast USA,Positive,14,420,1,1,0.0607282237659401
+Min Agg,Northeast USA,Negative,4,120,1,1,-0.0155140803992397
+Min Agg,Northeast USA,Positive,31,930,1,1,0.081455033834021
+Min Agg,Northeast USA,Negative,2,60,1,1,-0.014
+HG,Rocky.Mountains.USA,Positive,20,600,1,1,0.0042037746584791
+HG,Rocky.Mountains.USA,Negative,3,90,1,1,-0.0350025960797389
+HG,Rocky.Mountains.USA,Positive,6,180,1,1,0.0813637494993227
+HG,Rocky.Mountains.USA,Negative,2,60,1,1,-0.00591115454716373
+HG,Rocky.Mountains.USA,Positive,3,90,1,1,0.00686657687078984
+HG,Rocky.Mountains.USA,Negative,3,90,1,1,-0.00997687195592256
+HG,Rocky.Mountains.USA,Positive,31,930,1,1,0.0674409508075451
+HG,Rocky.Mountains.USA,Negative,1,30,1,1,-0.000789693647585743
+HG,Rocky.Mountains.USA,Positive,10,300,1,1,0.0929457685008455
+HG,Rocky.Mountains.USA,Negative,17,510,1,1,-0.176923406651359
+HG,Rocky.Mountains.USA,Positive,7,210,1,1,0.157512752363727
+HG,Midwest.USA,Negative,2,60,1,1,-0.00734166197628561
+HG,Midwest.USA,Positive,12,360,1,1,0.0636071233793718
+Min Agg,Midwest.USA,Negative,4,120,1,1,-0.00851130642630427
+Min Agg,Midwest.USA,Positive,11,330,1,1,0.0525160641387279
+Min Agg,Midwest.USA,Negative,9,270,1,1,-0.0380408731447446
+Min Agg,Midwest.USA,Positive,21,630,1,1,0.0818789756269789
+Min Agg,Midwest.USA,Negative,11,330,1,1,-0.0178689013240847
+Moderate Agg,Midwest.USA,Positive,19,570,1,1,0.086105627567199
+Moderate Agg,Midwest.USA,Negative,13,390,1,1,-0.118095318413037
+HG,Midwest.USA,Positive,1,30,1,1,0.005
+HG,Southeastern.USA,Positive,9,270,1,1,0.0709148577826655
+Min Agg,Southeastern.USA,Negative,9,270,1,1,-0.0386969560615
+Min Agg,Southeastern.USA,Positive,15,450,1,1,0.0512928795553336
+Min Agg,Southeastern.USA,Negative,8,240,1,1,-0.0217228353080339
+Moderate Agg,Southeastern.USA,Positive,50,1500,1,1,0.0691704920806027
+Moderate Agg,Southeastern.USA,Negative,12,360,1,1,-0.046
