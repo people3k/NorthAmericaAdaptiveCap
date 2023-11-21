@@ -4,17 +4,17 @@ library(nlme)
 library(cowplot)
 library(plyr)
 library(tidyr)
+library(conover.test)
 ###Controlled comparison of Central Texas and the Middle Mississippi River Valley
 
 ######Box Plots and Violin Plots for Isotopes in Central Texas
 d2 <- read.csv("data/CTexIsotope.csv")
 dCIII<-subset(d2,CompID1=="Component III")
 
-median(dCIII$DeltaN)
 
 pcar2 <- ggplot(dCIII, aes(factor(CompID3), (DeltaC13Car), fill=BRMIndex))+
   geom_violin()+
-  geom_boxplot(notch = FALSE, width=0.2)+
+  stat_summary(fun=median, geom="point", size=4, color="black")+
   stat_boxplot(geom ='errorbar')+
   scale_fill_gradient(low ="#F8766D", high = "#619CFF" ) +
   #scale_fill_manual(values=c("#619CFF", "#00BA38", "#F8766D"))+
@@ -43,6 +43,10 @@ pn2 <- ggplot(dCIII, aes(factor(CompID3), (DeltaN), fill=BRMIndex))+
           size=28),  plot.title = element_text(size=18, face = "bold"))+
   labs(x = "Time period cal BP", y="Delta 15N collagen", title = "F. Central Texas Delta 15N and Midden Index",  fill = "BRM Index")
 pn2
+
+kruskal.test(DeltaN~CompID3, data = dCIII)
+conover.test(dCIII$DeltaN, dCIII$CompID3, kw=TRUE, method="bonferroni")
+conover.test(dCIII$DeltaN, dCIII$CompID3, kw=TRUE, method="by")
 
 nitro1<-subset(dCIII, CompID3 %in% c('2','3'))
 wilcox.test(DeltaN ~ CompID3, data=nitro1)
@@ -268,6 +272,28 @@ p1ct<-ggplot(data = dd3) +
   geom_vline(xintercept = 650)
 p1ct
 
+Con3<- read.csv("data/CTexKDE50.csv")
+
+
+ptex <- ggplot(Con3,aes(x=(calBP), y=(MKDE))) +
+  geom_ribbon(aes(ymin = lo2, ymax = hi2), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predict), color="blue", size=1, linetype = "dashed" ) +
+  theme_bw() +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  # scale_y_continuous(limits=c(0,0.42))+
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "B. Central Texas KDE and Logistic Model")+
+  geom_vline(xintercept = 2000)+
+  geom_vline(xintercept = 1200)+
+  geom_vline(xintercept = 650)
+ptex
+
+
+
 dd2c<- read.csv("data/CTexKDE50.csv")
 #I then trimm time points with missing values at the end due to KDE bandwidth.
 dd2c<-na.omit(dd2c)
@@ -276,7 +302,7 @@ dd2c<-subset(dd2c, select=-c(V1:V200))
 library(zoo)
 # sum and save new csvs.
 out50 <- rollapply(dd2c,30,(sum),by=30,by.column=TRUE,align='right')
-write.table(out50, file = "sums/CTexKDE30.csv", sep = ",", col.names=NA)
+write.table(out50,  file = "sums/CTexKDE30.csv", sep = ",", col.names=NA)
 
 pc30ct<- read.csv("sums/CTexKDE30.csv")
 
@@ -299,6 +325,32 @@ ctexpc <- ggplot(pc30ct,aes(x=(calBP), y=(PerCap))) +
   geom_vline(xintercept = 1200)+
   geom_vline(xintercept = 650)
 ctexpc
+
+pc30ct<- read.csv("sums/CTexPerCap30.csv")
+
+pctex <- ggplot(pc30ct,aes(x=(calBP), y=(PerCap))) +
+  # geom_line(dat=dd3m,aes(x = calBP, y = (KDEper), group = Runs), color = "purple", alpha = 0.25) +
+  geom_ribbon(aes(ymin = lo2, ymax = hi2), fill = "grey70") +
+  geom_point(aes(),size=1) +
+  scale_y_continuous(limits=c(-.3,0.35))+
+  # scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  #scale_color_manual(values=c("#619CFF", "#00BA38", "#F8766D"))+
+  theme_bw() +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  # scale_y_continuous(limits=c(0,0.42))+
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE per capita growth", title = "D. Central Texas KDE Per Capita Growth")+
+  geom_vline(xintercept = 1900)+
+  geom_vline(xintercept = 1250)+
+  geom_vline(xintercept = 900)+
+  geom_vline(xintercept = 750)+
+  geom_hline(yintercept=0)+
+  geom_line(aes(),size=1.25) 
+#geom_vline(xintercept = 1300)+
+#geom_vline(xintercept = 650)
+pctex
 
 
 
@@ -338,6 +390,10 @@ pcol1 <- ggplot(d5, aes(factor(TimeID), (delta13ccol), fill=(CultIndex)))+
   labs(x = "Time period cal BP", y="Delta 13C collagen", title = "Miss. R. Valley Delta 13C Collagen and Cultivation Index", fill = "Cult. Index")
 #facet_wrap(~factor(PeriodBP))
 pcol1
+
+kruskal.test(delta15n ~ TimeID, data = d5)
+conover.test(d5$delta15n, d5$TimeID, kw=TRUE, method="bonferroni")
+conover.test(d5$delta15n, d5$TimeID, kw=TRUE, method="by")
 
 #Subset data for Mann-Whittney U tests and run the tests.
 
@@ -597,6 +653,25 @@ p1<-ggplot(data = dd3m) +
   geom_vline(xintercept = 750)
 p1
 
+
+pmiss <- ggplot(dd2m,aes(x=(calBP), y=(MKDE))) +
+  geom_ribbon(aes(ymin = lo2, ymax = hi2), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm), color="blue", size=1, linetype = "dashed" ) +
+  theme_bw() +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  # scale_y_continuous(limits=c(0,0.42))+
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "A. Mississippi R. Valley KDE and Logistic Model")+
+  geom_vline(xintercept = 1900)+
+  geom_vline(xintercept = 1250)+
+  geom_vline(xintercept = 900)+
+  geom_vline(xintercept = 750)
+pmiss
+
 dd2c<- read.csv("data/MissKDE50.csv")
 #I then trimm time points with missing values at the end due to KDE bandwidth.
 dd2c<-na.omit(dd2c)
@@ -630,12 +705,38 @@ Misspc <- ggplot(pc30,aes(x=(calBP), y=(PerCap))) +
   geom_hline(yintercept = 0)
 Misspc
 
+pcm30<- read.csv("sums/MissPerCap30.csv")
+
+pcmiss <- ggplot(pcm30,aes(x=(calBP), y=(PerCap))) +
+  # geom_line(dat=dd3m,aes(x = calBP, y = (KDEper), group = Runs), color = "purple", alpha = 0.25) +
+  geom_ribbon(aes(ymin = lo2, ymax = hi2), fill = "grey70") +
+  geom_point(aes(),size=1) +
+  scale_y_continuous(limits=c(-.3,0.35))+
+  # scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  #scale_color_manual(values=c("#619CFF", "#00BA38", "#F8766D"))+
+  theme_bw() +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  # scale_y_continuous(limits=c(0,0.42))+
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE per capita growth", title = "C. Mississippi R. Valley KDE Per Capita Growth")+
+  geom_vline(xintercept = 1900)+
+  geom_vline(xintercept = 1250)+
+  geom_vline(xintercept = 900)+
+  geom_vline(xintercept = 750)+
+  geom_hline(yintercept=0)+
+  geom_line(aes(),size=1.25) 
+#geom_vline(xintercept = 1300)+
+#geom_vline(xintercept = 650)
+pcmiss
+
 
 ######Plots that compare Central Texas and the Mississippi River Valley
-Fig5Rev<-plot_grid(p1, p1ct, Misspc, ctexpc,pn1,pn2, ncol=2, align="hv", axis = "rl")
+Fig5Rev<-plot_grid(pmiss, ptex, pcmiss,pctex,pn1,pn2, ncol=2, align="hv", axis = "rl")
 Fig5Rev
 
-pdf("CtexMiss3.pdf", width=15, height=17.55)
+pdf("CtexMissRev.pdf", width=15, height=17.55)
 Fig5Rev
 dev.off()
 #==================================================================================================================================
@@ -762,6 +863,25 @@ p1<-ggplot(data = dd3m) +
   #annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
   #annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
   # facet_wrap(factor(Region)~.)
+p1
+
+
+p1<-ggplot(dd2m,aes(x=(calBP), y=(MKDE*100))) +
+  geom_ribbon(aes(ymin = lo2*100, ymax = hi2*100), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm*100), color="blue", size=1.5, linetype = "dashed" ) +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  theme_bw() +
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "A. SW ArchaeoGlobe KDE and Logistic Model")
+# annotate("text", x =3500, y = .047, label = "Phase 1", size = 7, angle=90)+
+#annotate("text", x =2000, y = .047, label = "Phase 2", size = 7, angle=90)+
+#annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
+#annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
+# facet_wrap(factor(Region)~.)
 p1
 
 pdf("SI/SWPop.pdf", width=8, height=6.55)
@@ -892,6 +1012,24 @@ p2<-ggplot(data = dd3m) +
 # facet_wrap(factor(Region)~.)
 p2
 
+p2<-ggplot(dd2m,aes(x=(calBP), y=(MKDE*100))) +
+  geom_ribbon(aes(ymin = lo2*100, ymax = hi2*100), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm*100), color="blue", size=1.5, linetype = "dashed" ) +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  theme_bw() +
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "B. WE ArchaeoGlobe KDE and Logistic Model")
+# annotate("text", x =3500, y = .047, label = "Phase 1", size = 7, angle=90)+
+#annotate("text", x =2000, y = .047, label = "Phase 2", size = 7, angle=90)+
+#annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
+#annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
+# facet_wrap(factor(Region)~.)
+p2
+
 pdf("SI/WEPop.pdf", width=8, height=6.55)
 p2
 dev.off()
@@ -948,7 +1086,7 @@ wepcs
 dev.off()
 
 
-########Central Plains
+########Central Plains==================================================================================
 SPD.3<- subset(SPD, Archaeo_ID=="17")
 #write.table(SPD.3, file = "Northeast.csv", sep = ",")
 ##calibrate
@@ -1007,6 +1145,24 @@ p3<-ggplot(data = dd3m) +
   geom_line(aes(x = calBP, y = (KDE*100), group = Runs), color = "purple", alpha = 0.5) +
   geom_point(data = dd4m, aes(x = calBP, y = (MKDE*100)), color="black", size=2) +
   geom_line(data = dd2m, aes(x = calBP, y = (predictm*100)), linetype = "dashed", color="green", size=1.5) +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  theme_bw() +
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "C. CP ArchaeoGlobe KDE and Logistic Model")
+# annotate("text", x =3500, y = .047, label = "Phase 1", size = 7, angle=90)+
+#annotate("text", x =2000, y = .047, label = "Phase 2", size = 7, angle=90)+
+#annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
+#annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
+# facet_wrap(factor(Region)~.)
+p3
+
+p3<-ggplot(dd2m,aes(x=(calBP), y=(MKDE*100))) +
+  geom_ribbon(aes(ymin = lo2*100, ymax = hi2*100), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm*100), color="blue", size=1.5, linetype = "dashed" ) +
   scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
   theme_bw() +
   theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
@@ -1149,6 +1305,24 @@ p4<-ggplot(data = dd3m) +
 # facet_wrap(factor(Region)~.)
 p4
 
+p4<-ggplot(dd2m,aes(x=(calBP), y=(MKDE*100))) +
+  geom_ribbon(aes(ymin = lo2*100, ymax = hi2*100), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm*100), color="blue", size=1.5, linetype = "dashed" ) +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  theme_bw() +
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "D. SE ArchaeoGlobe KDE and Logistic Model")
+# annotate("text", x =3500, y = .047, label = "Phase 1", size = 7, angle=90)+
+#annotate("text", x =2000, y = .047, label = "Phase 2", size = 7, angle=90)+
+#annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
+#annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
+# facet_wrap(factor(Region)~.)
+p4
+
 pdf("SI/SEPop.pdf", width=8, height=6.55)
 p4
 dev.off()
@@ -1263,6 +1437,24 @@ p5<-ggplot(data = dd3m) +
   geom_line(aes(x = calBP, y = (KDE*100), group = Runs), color = "purple", alpha = 0.5) +
   geom_point(data = dd4m, aes(x = calBP, y = (MKDE*100)), color="black", size=2) +
   geom_line(data = dd2m, aes(x = calBP, y = (predictm*100)), linetype = "dashed", color="green", size=1.5) +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  theme_bw() +
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "E. MW ArchaeoGlobe KDE and Logistic Model")
+# annotate("text", x =3500, y = .047, label = "Phase 1", size = 7, angle=90)+
+#annotate("text", x =2000, y = .047, label = "Phase 2", size = 7, angle=90)+
+#annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
+#annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
+# facet_wrap(factor(Region)~.)
+p5
+
+p5<-ggplot(dd2m,aes(x=(calBP), y=(MKDE*100))) +
+  geom_ribbon(aes(ymin = lo2*100, ymax = hi2*100), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm*100), color="blue", size=1.5, linetype = "dashed" ) +
   scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
   theme_bw() +
   theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
@@ -1403,6 +1595,24 @@ p6<-ggplot(data = dd3m) +
 # facet_wrap(factor(Region)~.)
 p6
 
+p6<-ggplot(dd2m,aes(x=(calBP), y=(MKDE*100))) +
+  geom_ribbon(aes(ymin = lo2*100, ymax = hi2*100), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm*100), color="blue", size=1.5, linetype = "dashed" ) +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  theme_bw() +
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "F. NE ArchaeoGlobe KDE and Logistic Model")
+# annotate("text", x =3500, y = .047, label = "Phase 1", size = 7, angle=90)+
+#annotate("text", x =2000, y = .047, label = "Phase 2", size = 7, angle=90)+
+#annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
+#annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
+# facet_wrap(factor(Region)~.)
+p6
+
 pdf("SI/NEPop.pdf", width=8, height=6.55)
 p6
 dev.off()
@@ -1515,6 +1725,25 @@ p7<-ggplot(data = dd3m) +
   geom_line(aes(x = calBP, y = (KDE*100), group = Runs), color = "purple", alpha = 0.5) +
   geom_point(data = dd4m, aes(x = calBP, y = (MKDE*100)), color="black", size=2) +
   geom_line(data = dd2m, aes(x = calBP, y = (predictm*100)), linetype = "dashed", color="green", size=1.5) +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  theme_bw() +
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "G. SS ArchaeoGlobe KDE and Logistic Model")
+# annotate("text", x =3500, y = .047, label = "Phase 1", size = 7, angle=90)+
+#annotate("text", x =2000, y = .047, label = "Phase 2", size = 7, angle=90)+
+#annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
+#annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
+# facet_wrap(factor(Region)~.)
+p7
+
+
+p7<-ggplot(dd2m,aes(x=(calBP), y=(MKDE*100))) +
+  geom_ribbon(aes(ymin = lo2*100, ymax = hi2*100), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm*100), color="blue", size=1.5, linetype = "dashed" ) +
   scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
   theme_bw() +
   theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
@@ -1643,6 +1872,24 @@ p8<-ggplot(data = dd3m) +
   geom_line(aes(x = calBP, y = (KDE*100), group = Runs), color = "purple", alpha = 0.5) +
   geom_point(data = dd4m, aes(x = calBP, y = (MKDE*100)), color="black", size=2) +
   geom_line(data = dd2m, aes(x = calBP, y = (predictm*100)), linetype = "dashed", color="green", size=1.5) +
+  scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
+  theme_bw() +
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "H. RM ArchaeoGlobe KDE and Logistic Model")
+# annotate("text", x =3500, y = .047, label = "Phase 1", size = 7, angle=90)+
+#annotate("text", x =2000, y = .047, label = "Phase 2", size = 7, angle=90)+
+#annotate("text", x =1020, y = .047, label = "Phase 3", size = 7, angle=90)+
+#annotate("text", x =210, y = .047, label = "Phase 4", size = 7, angle=90)+
+# facet_wrap(factor(Region)~.)
+p8
+
+p8<-ggplot(dd2m,aes(x=(calBP), y=(MKDE*100))) +
+  geom_ribbon(aes(ymin = lo2*100, ymax = hi2*100), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  geom_line(aes(y=predictm*100), color="blue", size=1.5, linetype = "dashed" ) +
   scale_x_reverse(breaks=c(3500, 2500, 1500, 500), limits=c(3500,400))+
   theme_bw() +
   theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
@@ -1812,4 +2059,125 @@ Fig5Rev
 
 pdf("data/DT_USA3.pdf", width=13, height=11.55)
 Fig5Rev
+dev.off()
+
+###Taphonomic Adjustment Exploration===============================================
+box<- read.csv("data/FinalRCDTexas3.csv")
+box2<- subset(box, Region=="CTx")
+
+###Calibrate the radiocarbon ages
+cptcal <- calibrate(x = box2$Age,  errors = box2$Error, calCurves = "intcal20",  normalised = FALSE)
+boxbins <- binPrep(sites = box2$Trinomial, ages = box2$Age, h = 100)
+
+
+####Run analysis for component 3 logistic 3500 to 150
+spd.CTx <- spd(cptcal, bins=boxbins, runm=150, timeRange=c(8400,200))
+plot(spd.CTx, runm=150, xlim=c(8400,400), type="simple")
+
+PrDens<-spd.CTx$grid$PrDens
+calBP<-spd.CTx$grid$calBP
+
+
+Tx= transformSPD(spd.CTx)
+plot((10*Tx$grid$PrDens)~calBP,
+     xlim=c(8400, 400))
+
+US.randates = sampleDates(cptcal, bins=boxbins, nsim=200,verbose=FALSE)
+D.ckdetx = ckde(US.randates,timeRange=c(8400,200),bw=50, normalised = FALSE)
+plot(D.ckdetx,type='multiline')
+D.ckdetx$timeRange
+
+txTaph= transformSPD(D.ckdetx)
+txtaph2<-transformSPD(D.ckdetx, correction = expression(PrDens/(21149.57*(calBP+1788.03)^-1.26)))
+plot(txTaph,type='multiline')
+plot(txtaph2,type='multiline')
+
+
+##Write matrix of KDEs as a data frame
+Check<-as.data.frame(D.ckdetx$res.matrix)
+Check2<-as.data.frame(txTaph$res.matrix)
+
+##Cbind spd and KDEs and write Write the files if youwould like
+#dd<-cbind(calBP,PrDens, Check)
+#write.table(dd, file = "SI/Tex8k.csv", sep = ",", col.names=NA)
+
+##3Calculate the mean KDE and 95\% confidence interval and reload the files
+
+##Load Tex8K KDE
+dd2<- read.csv("SI/Tex8k.csv")
+#I then trimm time points with missing values at the end due to KDE bandwidth.
+dd2<-na.omit(dd2)
+
+ptex <- ggplot(dd2,aes(x=(calBP), y=(MKDE))) +
+  geom_ribbon(aes(ymin = lo2, ymax = hi2), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  # geom_line(aes(y=predictm), color="blue", size=1, linetype = "dashed" ) +
+  theme_bw() +
+  scale_x_reverse(breaks=c(8000,7000,6000,5000,4000,3000,2000,1000, 0), limits=c(8000,300))+
+  # scale_y_continuous(limits=c(0,0.42))+
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "A. Central Texas KDE")+
+  geom_vline(xintercept = 3500)+
+  geom_vline(xintercept = 2000)+
+  geom_vline(xintercept = 1200)+
+  geom_vline(xintercept = 650)
+ptex
+
+###Load taphonomically corrected mean KDE and confidence intervals
+dd3<- read.csv("SI/TexTaph8k.csv")
+#I then trimm time points with missing values at the end due to KDE bandwidth.
+dd3<-na.omit(dd3)
+
+ptextp <- ggplot(dd3,aes(x=(calBP), y=(MKDE))) +
+  geom_ribbon(aes(ymin = lo2, ymax = hi2), fill = "grey70") +
+  geom_point(aes(), size=2) +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  #geom_line(aes(y=predictm), color="blue", size=1, linetype = "dashed" ) +
+  theme_bw() +
+  scale_x_reverse(breaks=c(8000,7000,6000,5000,4000,3000,2000,1000, 0), limits=c(8000,300))+
+  # scale_y_continuous(limits=c(0,0.42))+
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "B. Central Texas KDE Taph. Adjusted")+
+  geom_vline(xintercept = 3500)+
+  geom_vline(xintercept = 2000)+
+  geom_vline(xintercept = 1200)+
+  geom_vline(xintercept = 650)
+ptextp
+
+
+###Exploring the effects of taphonomic correction on a known underlying logistic distribution over time.
+
+dd3<- read.csv("data/TaphTest.csv")
+
+
+ptaph <- ggplot(dd3,aes(x=(calBP), y=(Logistic))) +
+  geom_line(aes(), size=2) +
+  #geom_line(aes(x=calBP, y=MKDE), size=2, color="green") +
+  # geom_line(aes(x=calBP, y=MissCorrect/2), size=2, color="red", linetype = "dotdash") +
+  # geom_line(aes(x=calBP, y=missKDE/2), size=2, color="green") +
+  geom_line(aes(x=calBP, y=LogisticCorrect), size=2, color="purple", linetype = "dashed") +
+  #scale_color_gradient(low ="#F8766D", high = "#619CFF" ) +
+  #geom_line(aes(y=predictm), color="blue", size=1, linetype = "dashed" ) +
+  theme_bw() +
+  scale_x_reverse(breaks=c(3000,2000,1000, 0), limits=c(3500,200))+
+  # scale_y_continuous(limits=c(0,0.42))+
+  theme(axis.text.x = element_text(size=28, colour = "black"), axis.title.x=element_text(size=24),
+        axis.title.y=element_text(size=24), axis.text.y = element_text(
+          size=28), plot.title = element_text(size=18, face = "bold"))+
+  labs(x = "Years Cal BP", y="KDE of radiocarbon ages", title = "Logistic and Taph. Adjusted Logistic Distributions")
+#geom_vline(xintercept = 3500)+
+#geom_vline(xintercept = 1900)+
+#geom_vline(xintercept = 1250)+
+#geom_vline(xintercept = 900)+
+#geom_vline(xintercept = 750)
+ptaph
+
+###Save pdf of ptaph graph
+pdf("SI/TaphR.pdf", width=8, height=10.55)
+ptaph
 dev.off()
